@@ -7,3 +7,7 @@ end
 def default_size
   5
 end
+
+def default_robot_name
+  'BB8'
+end
