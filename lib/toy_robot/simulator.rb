@@ -16,5 +16,16 @@ module ToyRobot
       raise ArgumentError, 'invalid coordinate' unless @playground.valid_coordinate?(x, y)
       raise ArgumentError, 'invalid position' unless @robot.set_position(x, y, f)
     end
+
+    def move!
+      unless new_position = @robot.step_forward
+        raise RuntimeError, 'no robot on playground'
+      end
+
+      unless @playground.valid_coordinate?(new_position[:x], new_position[:y])
+        @robot.step_backward # rollback
+        raise RuntimeError, 'reached boundary'
+      end
+    end
   end
 end

@@ -26,4 +26,35 @@ RSpec.describe ToyRobot::Simulator do
     end
   end
 
+  describe '#move!' do
+    context 'when robot position is set' do
+      shared_examples 'move within range' do |x, y, f|
+        it 'a step forward' do
+          game.place!(x, y, f)
+          expect{game.move!}.not_to raise_error
+        end
+      end
+
+      shared_examples 'move out of range' do |x, y, f|
+        it 'failed to move' do
+          game.place!(x, y, f)
+          expect{game.move!}.to raise_error(RuntimeError, 'reached boundary')
+        end
+      end
+
+      context 'from right bottom most' do
+        x = y = 0
+
+        include_examples 'move within range', x, y, 'n'
+        include_examples 'move within range', x, y, 'e'
+        include_examples 'move out of range', x, y, 's'
+        include_examples 'move out of range', x, y, 'w'
+      end
+    end
+
+    context 'when robot position is not set' do
+      specify { expect{game.move!}.to raise_error(RuntimeError, 'no robot on playground') }
+    end
+  end
+
 end
