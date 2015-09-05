@@ -9,7 +9,7 @@ module ToyRobot
 
     def initialize(name='BB8')
       @name = name
-      @position = nil
+      @position = {:x => nil, :y => nil, :f => nil}
     end
 
     def set_position(x, y, f)
@@ -24,6 +24,10 @@ module ToyRobot
         :y => y,
         :f => direction,
       }
+    end
+
+    def position?
+      @position[:x] && @position[:y] && @position[:f]
     end
 
     private
