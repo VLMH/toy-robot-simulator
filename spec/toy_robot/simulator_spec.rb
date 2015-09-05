@@ -4,6 +4,6 @@ RSpec.describe 'ToyRobot::Simulator' do
 
   let(:game) { ToyRobot::Simulator.new }
 
-  specify { expect(game.name).eq('Toy Robot Simulator') }
+  specify { expect(game.name).to eq('Toy Robot Simulator') }
 
 end
