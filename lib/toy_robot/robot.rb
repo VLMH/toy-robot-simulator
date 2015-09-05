@@ -30,6 +30,10 @@ module ToyRobot
       @position[:x] && @position[:y] && @position[:f]
     end
 
+    def position
+      position? ? @position : nil
+    end
+
     private
 
     def identify_direction(f)

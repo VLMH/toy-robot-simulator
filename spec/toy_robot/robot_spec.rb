@@ -29,4 +29,20 @@ RSpec.describe ToyRobot::Robot do
       specify { expect(robot.position?).to be_falsey }
     end
   end
+
+  describe '#position' do
+    context 'when position is set' do
+      x = y = 0
+      f = 'n'
+      position = {x: x, y: y, f: 'n'}
+
+      before { robot.set_position(x, y, f) }
+
+      specify { expect(robot.position).to eq(position) }
+    end
+
+    context 'when position is not set' do
+      specify { expect(robot.position).to be_nil }
+    end
+  end
 end
