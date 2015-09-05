@@ -42,13 +42,22 @@ RSpec.describe ToyRobot::Simulator do
         end
       end
 
-      context 'from right bottom most' do
+      context 'from bottom left most' do
         x = y = 0
 
         include_examples 'move within range', x, y, 'n'
         include_examples 'move within range', x, y, 'e'
         include_examples 'move out of range', x, y, 's'
         include_examples 'move out of range', x, y, 'w'
+      end
+
+      context 'from top right most' do
+        x = y = default_size - 1
+
+        include_examples 'move out of range', x, y, 'n'
+        include_examples 'move out of range', x, y, 'e'
+        include_examples 'move within range', x, y, 's'
+        include_examples 'move within range', x, y, 'w'
       end
     end
 
