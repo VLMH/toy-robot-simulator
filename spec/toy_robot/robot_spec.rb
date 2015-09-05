@@ -46,33 +46,68 @@ RSpec.describe ToyRobot::Robot do
     end
   end
 
-  shared_examples 'make a move' do |x, y, f, expected_position|
-    before { robot.set_position(x, y, f) }
-    specify { expect(robot.step_forward).to eq(expected_position) }
-  end
-
   describe '#step_forward' do
+    shared_examples 'make a step forward' do |x, y, f, expected_position|
+      before { robot.set_position(x, y, f) }
+      specify { expect(robot.step_forward).to eq(expected_position) }
+    end
+
     context 'when position is set' do
       x = y = 0
 
       context 'face to north' do
         f = 'n'
-        include_examples 'make a move', x, y, f, {x: x, y: y + 1, f: f}
+        include_examples 'make a step forward', x, y, f, {x: x, y: y + 1, f: f}
       end
 
       context 'face to east' do
         f = 'e'
-        include_examples 'make a move', x, y, f, {x: x + 1, y: y, f: f}
+        include_examples 'make a step forward', x, y, f, {x: x + 1, y: y, f: f}
       end
 
       context 'face to south' do
         f = 's'
-        include_examples 'make a move', x, y, f, {x: x, y: y - 1, f: f}
+        include_examples 'make a step forward', x, y, f, {x: x, y: y - 1, f: f}
       end
 
       context 'face to west' do
         f = 'w'
-        include_examples 'make a move', x, y, f, {x: x - 1, y: y, f: f}
+        include_examples 'make a step forward', x, y, f, {x: x - 1, y: y, f: f}
+      end
+    end
+
+    context 'when position is not set' do
+      specify { expect(robot.step_forward).to be_nil }
+    end
+  end
+
+  describe '#step_backward' do
+    shared_examples 'make a step backward' do |x, y, f, expected_position|
+      before { robot.set_position(x, y, f) }
+      specify { expect(robot.step_backward).to eq(expected_position) }
+    end
+
+    context 'when position is set' do
+      x = y = 0
+
+      context 'face to north' do
+        f = 'n'
+        include_examples 'make a step backward', x, y, f, {x: x, y: y - 1, f: f}
+      end
+
+      context 'face to east' do
+        f = 'e'
+        include_examples 'make a step backward', x, y, f, {x: x - 1, y: y, f: f}
+      end
+
+      context 'face to south' do
+        f = 's'
+        include_examples 'make a step backward', x, y, f, {x: x, y: y + 1, f: f}
+      end
+
+      context 'face to west' do
+        f = 'w'
+        include_examples 'make a step backward', x, y, f, {x: x + 1, y: y, f: f}
       end
     end
 

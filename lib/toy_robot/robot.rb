@@ -40,6 +40,12 @@ module ToyRobot
       @position
     end
 
+    def step_backward(step=1)
+      return nil unless position?
+      moving(step) { |pos, step| pos - step }
+      @position
+    end
+
     private
 
     def identify_direction(f)
