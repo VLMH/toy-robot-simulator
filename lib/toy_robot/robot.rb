@@ -16,7 +16,7 @@ module ToyRobot
       if !x.is_a?(Integer) ||
          !y.is_a?(Integer) ||
          !(direction = identify_direction(f))
-         return false
+         return nil
       end
 
       @position = {
