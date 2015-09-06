@@ -1,5 +1,7 @@
 module ToyRobot
+  # Robot of the game that will place on playground
   class Robot
+    # constants of direction
     NORTH = 'n'.freeze
     EAST  = 'e'.freeze
     SOUTH = 's'.freeze
@@ -7,11 +9,20 @@ module ToyRobot
 
     attr_accessor :name
 
+    # Init robot with a name
+    # Position includes coordinate (x, y) and direction (f)
     def initialize(name='BB8')
       @name = name
       @position = {:x => nil, :y => nil, :f => nil}
     end
 
+    # Set position of the robot
+    # Return nil on invalid input values
+    #
+    # Params:
+    # - +x+ X-coordinate
+    # - +y+ Y-coordinate
+    # - +f+ Direction
     def set_position(x, y, f)
       if !x.is_a?(Integer) ||
          !y.is_a?(Integer) ||
@@ -26,32 +37,48 @@ module ToyRobot
       }
     end
 
+    # Check if position is set
+    # Return true with both coordinate (x, y) and direction are set
     def position?
       @position[:x] && @position[:y] && @position[:f]
     end
 
+    # Get position
+    # Return nil if position is not set
     def position
       position? ? @position : nil
     end
 
+    # Move forward according to direction
+    #
+    # Params:
+    # - +step+ number of steps to move
     def step_forward(step=1)
       return nil unless position?
       moving(step) { |pos, step| pos + step }
       @position
     end
 
+    # Move backward according to direction
+    #
+    # Params:
+    # - +step+ number of steps to move
     def step_backward(step=1)
       return nil unless position?
       moving(step) { |pos, step| pos - step }
       @position
     end
 
+    # Turn left and return new position
+    # Return nil if position is not set
     def turn_left
       return nil unless position?
       @position[:f] = direction_sequence[direction_sequence.index(@position[:f]) - 1]
       @position
     end
 
+    # Turn right and return new position
+    # Return nil if position is not set
     def turn_right
       return nil unless position?
       if (index = direction_sequence.index(@position[:f]) + 1) >= direction_sequence.count
