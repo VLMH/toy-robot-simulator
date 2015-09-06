@@ -9,19 +9,27 @@ RSpec.describe ToyRobot::Playground do
 
   describe '#valid_coordinate?' do
     context 'when valid position provided' do
-      specify { expect(playground.valid_coordinate?(0, 0)).to be_truthy }
-      specify { expect(playground.valid_coordinate?(1, 2)).to be_truthy }
-      specify { expect(playground.valid_coordinate?(default_size - 1, default_size - 1)).to be_truthy }
+      [
+        [0, 0],
+        [1, 2],
+        [default_size - 1, default_size - 1],
+      ].each do |coord|
+        specify { expect(playground.valid_coordinate?(coord[0], coord[1])).to be_truthy }
+      end
     end
 
     context 'when invalid position provided' do
-      specify { expect(playground.valid_coordinate?('0', 0)).to be_falsey }
-      specify { expect(playground.valid_coordinate?(0, '0')).to be_falsey }
-      specify { expect(playground.valid_coordinate?(-1, -1)).to be_falsey }
-      specify { expect(playground.valid_coordinate?(-1, 0)).to be_falsey }
-      specify { expect(playground.valid_coordinate?(0, -1)).to be_falsey }
-      specify { expect(playground.valid_coordinate?(default_size, default_size - 1)).to be_falsey }
-      specify { expect(playground.valid_coordinate?(default_size - 1, default_size)).to be_falsey }
+      [
+        ['0', 0],
+        [0, '0'],
+        [-1, -1],
+        [-1, 0],
+        [0, -1],
+        [default_size, default_size - 1],
+        [default_size - 1, default_size],
+      ].each do |coord|
+        specify { expect(playground.valid_coordinate?(coord[0], coord[1])).to be_falsey }
+      end
     end
   end
 end
