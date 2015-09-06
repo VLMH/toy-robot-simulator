@@ -7,6 +7,12 @@ RSpec.describe ToyRobot::Playground do
     specify { expect(playground.size).to eq(default_size) }
   end
 
+  describe '#size=' do
+    new_size = default_size + 1
+    before { playground.size = new_size }
+    specify { expect(playground.size).to eq(new_size) }
+  end
+
   describe '#valid_coordinate?' do
     context 'when valid position provided' do
       [

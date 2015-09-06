@@ -1,7 +1,7 @@
 module ToyRobot
   # Playground of the game that robot moves on it
   class Playground
-    attr_reader :size
+    attr_accessor :size
 
     # Init playground with size provided
     def initialize(size)
