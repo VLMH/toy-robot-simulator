@@ -1,9 +1,9 @@
 module ToyRobot
   class Robot
-    NORTH = 'n'
-    EAST  = 'e'
-    SOUTH = 's'
-    WEST  = 'w'
+    NORTH = 'n'.freeze
+    EAST  = 'e'.freeze
+    SOUTH = 's'.freeze
+    WEST  = 'w'.freeze
 
     attr_accessor :name
 
@@ -46,6 +46,12 @@ module ToyRobot
       @position
     end
 
+    def turn_left
+      return nil unless position?
+      @position[:f] = direction_sequence[direction_sequence.index(@position[:f]) - 1]
+      @position
+    end
+
     private
 
     def identify_direction(f)
@@ -65,6 +71,10 @@ module ToyRobot
         when SOUTH then @position[:y] = yield(@position[:y], step * -1)
         when WEST  then @position[:x] = yield(@position[:x], step * -1)
       end
+    end
+
+    def direction_sequence
+      [NORTH, EAST, SOUTH, WEST]
     end
   end
 end
