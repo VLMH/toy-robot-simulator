@@ -68,7 +68,7 @@ RSpec.describe ToyRobot::Simulator do
 
   describe '#left!' do
     shared_examples 'turn left' do |x, y, f|
-      it 'turn left' do
+      it "turn left from #{f}" do
         game.place!(x, y, f)
         expect{game.left!}.not_to raise_error
       end
@@ -78,14 +78,35 @@ RSpec.describe ToyRobot::Simulator do
       x = y = 0
       expected_position = {x: x, y: y}
 
-      include_examples 'turn left', x, y, 'n'
-      include_examples 'turn left', x, y, 'e'
-      include_examples 'turn left', x, y, 's'
-      include_examples 'turn left', x, y, 'w'
+      all_directions.each do |f|
+        include_examples 'turn left', x, y, f
+      end
     end
 
     context 'robot is not on playground' do
       specify { expect{game.left!}.to raise_error(RuntimeError, 'no robot on playground') }
+    end
+  end
+
+  describe '#right!' do
+    shared_examples 'turn right' do |x, y, f|
+      it "turn right from #{f}" do
+        game.place!(x, y, f)
+        expect{game.right!}.not_to raise_error
+      end
+    end
+
+    context 'robot is on playground' do
+      x = y = 0
+      expected_position = {x: x, y: y}
+
+      all_directions.each do |f|
+        include_examples 'turn right', x, y, f
+      end
+    end
+
+    context 'robot is not on playground' do
+      specify { expect{game.right!}.to raise_error(RuntimeError, 'no robot on playground') }
     end
   end
 

@@ -11,3 +11,7 @@ end
 def default_robot_name
   'BB8'
 end
+
+def all_directions
+  ['n', 'e', 's', 'w']
+end
