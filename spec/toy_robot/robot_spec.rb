@@ -48,8 +48,10 @@ RSpec.describe ToyRobot::Robot do
 
   describe '#step_forward' do
     shared_examples 'make a step forward' do |x, y, f, expected_position|
-      before { robot.set_position(x, y, f) }
-      specify { expect(robot.step_forward).to eq(expected_position) }
+      it 'step forward' do
+        robot.set_position(x, y, f)
+        expect(robot.step_forward).to eq(expected_position)
+      end
     end
 
     context 'when position is set' do
@@ -83,8 +85,10 @@ RSpec.describe ToyRobot::Robot do
 
   describe '#step_backward' do
     shared_examples 'make a step backward' do |x, y, f, expected_position|
-      before { robot.set_position(x, y, f) }
-      specify { expect(robot.step_backward).to eq(expected_position) }
+      it 'step backward' do
+        robot.set_position(x, y, f)
+        expect(robot.step_backward).to eq(expected_position)
+      end
     end
 
     context 'when position is set' do
@@ -118,28 +122,19 @@ RSpec.describe ToyRobot::Robot do
 
   describe '#turn_left' do
     shared_examples 'turn left' do |x, y, f, expected_f|
-      before { robot.set_position(x, y, f) }
-      specify { expect(robot.turn_left[:f]).to eq(expected_f) }
+      it "turn left from #{f}" do
+        robot.set_position(x, y, f)
+        expect(robot.turn_left[:f]).to eq(expected_f)
+      end
     end
 
     context 'when position is set' do
       x = y = 0
 
-      context 'face to north' do
-        include_examples 'turn left', x, y, 'n', 'w'
-      end
-
-      context 'face to east' do
-        include_examples 'turn left', x, y, 'e', 'n'
-      end
-
-      context 'face to south' do
-        include_examples 'turn left', x, y, 's', 'e'
-      end
-
-      context 'face to west' do
-        include_examples 'turn left', x, y, 'w', 's'
-      end
+      include_examples 'turn left', x, y, 'n', 'w'
+      include_examples 'turn left', x, y, 'e', 'n'
+      include_examples 'turn left', x, y, 's', 'e'
+      include_examples 'turn left', x, y, 'w', 's'
     end
 
     context 'when position is not set' do
@@ -149,28 +144,19 @@ RSpec.describe ToyRobot::Robot do
 
   describe '#turn_right' do
     shared_examples 'turn right' do |x, y, f, expected_f|
-      before { robot.set_position(x, y, f) }
-      specify { expect(robot.turn_right[:f]).to eq(expected_f) }
+      it "turn right from #{f}" do
+        robot.set_position(x, y, f)
+        expect(robot.turn_right[:f]).to eq(expected_f)
+      end
     end
 
     context 'when position is set' do
       x = y = 0
 
-      context 'face to north' do
-        include_examples 'turn right', x, y, 'n', 'e'
-      end
-
-      context 'face to east' do
-        include_examples 'turn right', x, y, 'e', 's'
-      end
-
-      context 'face to south' do
-        include_examples 'turn right', x, y, 's', 'w'
-      end
-
-      context 'face to west' do
-        include_examples 'turn right', x, y, 'w', 'n'
-      end
+      include_examples 'turn right', x, y, 'n', 'e'
+      include_examples 'turn right', x, y, 'e', 's'
+      include_examples 'turn right', x, y, 's', 'w'
+      include_examples 'turn right', x, y, 'w', 'n'
     end
 
     context 'when position is not set' do
