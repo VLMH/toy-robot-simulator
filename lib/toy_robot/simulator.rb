@@ -27,5 +27,9 @@ module ToyRobot
         raise RuntimeError, 'reached boundary'
       end
     end
+
+    def left!
+      raise RuntimeError, 'no robot on playground' unless @robot.turn_left
+    end
   end
 end
