@@ -20,6 +20,11 @@ module ToyRobot
       @playground.size
     end
 
+    # Set size of playground
+    def set_playground_size(size)
+      @playground.size = size
+    end
+
     # Place a robot on playground
     #
     # Params:
