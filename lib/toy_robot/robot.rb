@@ -52,6 +52,15 @@ module ToyRobot
       @position
     end
 
+    def turn_right
+      return nil unless position?
+      if (index = direction_sequence.index(@position[:f]) + 1) >= direction_sequence.count
+        index -= direction_sequence.count
+      end
+      @position[:f] = direction_sequence[index]
+      @position
+    end
+
     private
 
     def identify_direction(f)
