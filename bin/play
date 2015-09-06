@@ -2,7 +2,8 @@
 
 #
 # CLI tool for Toy Robot Simulator.
-# This tool supports JSON file or interactive mode
+# This tool supports YAML format in file mode
+# and input from console in interactive mode
 #
 # Author: Victor Lam
 # Email: victorebox@gmail.com
@@ -12,6 +13,7 @@ lib = File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'toy_robot'
+require 'yaml'
 
 # monkey patch String to add a helper to verify Integer
 class String
@@ -95,9 +97,45 @@ rescue StandardError => e
 end
 
 def print_position(game)
-  puts game.report!
-rescue StandardError => e
-  print_error_message e
+  begin
+    position = game.report!
+  rescue StandardError => e
+    return print_error_message e
+  end
+
+  # print playground with robot position
+  printing = []
+  size = game.playground_size
+  grid_width = 3
+  (0..size).each do |row|
+    if row == size
+      # print top line
+      printing.unshift('-' * (game.playground_size * grid_width + 1))
+    else
+      print_col = ['', '']
+      (0..size).each do |col|
+        if col == size
+          print_col[0] += '|'
+        elsif row == position[:x] && col == position[:y]
+          print_col[0] += "|#{robot_direction(position[:f])} "
+        else
+          print_col[0] += '|  '
+        end
+        print_col[1] += col == size ? '-' : '-' * grid_width
+      end
+      printing.unshift *print_col
+    end
+  end
+  puts printing
+end
+
+def robot_direction(direction)
+  case direction
+    when ToyRobot::Robot::NORTH then '▲'
+    when ToyRobot::Robot::EAST  then '▶'
+    when ToyRobot::Robot::SOUTH then '▼'
+    when ToyRobot::Robot::WEST  then '◀'
+  end
 end
 
 # load commands from console
@@ -111,9 +149,11 @@ def interactive_mode
   print_commands
   puts "Let's start"
 
-  begin
+  while true
     cmd = get_cmd '> '
     action = extract_cmd(cmd)
+    exit(0) if cmd == 'quit'
+
     case action
       when 'place'
         place_robot(game, cmd)
@@ -124,7 +164,11 @@ def interactive_mode
       else
         print_commands
     end
-  end while cmd != 'quit'
+  end
+end
+
+def file_mode(filepath)
+  puts filepath
 end
 
 case ARGV.shift # mode
