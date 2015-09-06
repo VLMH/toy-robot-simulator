@@ -35,5 +35,10 @@ module ToyRobot
     def right!
       raise RuntimeError, 'no robot on playground' unless @robot.turn_right
     end
+
+    def report!
+      raise RuntimeError, 'no robot on playground' unless position = @robot.position
+      position
+    end
   end
 end

@@ -110,4 +110,14 @@ RSpec.describe ToyRobot::Simulator do
     end
   end
 
+  describe '#report!' do
+    context 'robot is on playground' do
+      before { game.place!(0, 0, 'n') }
+      specify { expect(game.report!).to eq({x: 0, y: 0, f: 'n'}) }
+    end
+
+    context 'robot is not on playground' do
+      specify { expect{game.report!}.to raise_error(RuntimeError, 'no robot on playground') }
+    end
+  end
 end
