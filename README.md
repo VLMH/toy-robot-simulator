@@ -1,12 +1,12 @@
 # Toy Robot Simulator
 Simulator to move a robot on a grid area
 
-### Setup
+## Setup
 - `git clone git@github.com:VLMH/toy-robot-simulator.git`
 - `cd toy-robot-simulator`
 - `bundle install`
 
-### How to play
+## How to play
 You may start the game in **interactive** mode or **file** mode
 
 #### Start the game
