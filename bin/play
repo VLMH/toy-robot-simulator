@@ -77,7 +77,7 @@ def extract_cmd(cmd)
 end
 
 def print_error_message(e)
-  puts "Oops, #{e.message}. You may type HELP for available commands."
+  puts "Oops, #{e.message}. Please try again."
 end
 
 def place_robot(game, cmd)
@@ -116,7 +116,7 @@ def print_position(game)
       (0..size).each do |col|
         if col == size
           print_col[0] += '|'
-        elsif row == position[:x] && col == position[:y]
+        elsif row == position[:y] && col == position[:x]
           print_col[0] += "|#{robot_direction(position[:f])} "
         else
           print_col[0] += '|  '
@@ -138,11 +138,26 @@ def robot_direction(direction)
   end
 end
 
+def handle_cmd(game, cmd, mode)
+  action = extract_cmd(cmd)
+  exit(0) if cmd == 'quit'
+
+  case action
+    when 'place'
+      place_robot(game, cmd)
+    when 'move', 'left', 'right'
+      move_robot(game, action)
+    when 'report'
+      print_position(game)
+    else
+      mode == 'i' ? print_commands : (puts 'Invalid command')
+  end
+end
+
 # load commands from console
-def interactive_mode
+def interactive_mode(game)
   puts "Welcome to Toy Robot Simulator!"
 
-  game = ToyRobot::Simulator.new
   set_name(game)
   set_size(game)
 
@@ -150,29 +165,31 @@ def interactive_mode
   puts "Let's start"
 
   while true
-    cmd = get_cmd '> '
-    action = extract_cmd(cmd)
-    exit(0) if cmd == 'quit'
-
-    case action
-      when 'place'
-        place_robot(game, cmd)
-      when 'move', 'left', 'right'
-        move_robot(game, action)
-      when 'report'
-        print_position(game)
-      else
-        print_commands
-    end
+    handle_cmd(game, get_cmd('> '), 'i')
   end
 end
 
-def file_mode(filepath)
-  puts filepath
+def file_mode(filepath, game)
+  instructions = YAML.load_file filepath
+
+  # setup
+  if instructions.key?('name') && !instructions['name'].empty?
+    game.name = instructions['name']
+  end
+  if instructions.key?('size') && !instructions['size'].to_s.is_i?
+    game.playground_size = instructions['size'].to_i
+  end
+
+  # run commands
+  instructions['commands'].each do |cmd|
+    puts "> #{cmd}"
+    handle_cmd(game, cmd, 'f')
+  end
 end
 
+game = ToyRobot::Simulator.new
 case ARGV.shift # mode
-  when '-i' then interactive_mode
-  when '-f' then file_mode ARGV.shift
+  when '-i' then interactive_mode(game)
+  when '-f' then file_mode(ARGV.shift, game)
   else print_help_and_exit
 end
