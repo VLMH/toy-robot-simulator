@@ -1,0 +1,7 @@
+---
+name: Lookahead
+size: 8
+commands:
+  - "place 0, 0, south"
+  - "move"
+  - "report"
