@@ -62,7 +62,7 @@ Following are available commands:
   QUIT                    quit the game
   HELP                    print available commands
 
-REMARK: commands are case incensitive
+REMARK: commands are case insensitive
 
 WELCOME
 end
