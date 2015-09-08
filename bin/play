@@ -39,14 +39,14 @@ PLACE x, y, direction   place robot on playground
   COMMANDS
 end
 
-def set_name(game)
-  name = get_cmd "Give it a name (#{game.name}) > "
-  game.name = name unless name.empty?
+def set_name
+  name = get_cmd "Give it a name (#{$game.name}) > "
+  $game.name = name unless name.empty?
 end
 
-def set_size(game)
-  size = get_cmd "Set size of playground (#{game.playground_size}) > "
-  game.set_playground_size(size.to_i) if size.is_i?
+def set_size
+  size = get_cmd "Set size of playground (#{$game.playground_size}) > "
+  $game.set_playground_size(size.to_i) if size.is_i?
 end
 
 def print_commands
@@ -80,37 +80,37 @@ def print_error_message(e)
   puts "Oops, #{e.message}. Please try again."
 end
 
-def place_robot(game, cmd)
+def place_robot(cmd)
   x, y, f = cmd.slice(/\s.*/).to_s.split(',')
   raise ArgumentError, 'invalid position' if x.nil? || y.nil? || f.nil?
   raise ArgumentError, 'x and y must be a number' if !x.is_i? || !y.is_i?
 
-  game.place!(x.to_i, y.to_i, f.strip)
+  $game.place!(x.to_i, y.to_i, f.strip)
 rescue StandardError => e
   print_error_message e
 end
 
-def move_robot(game, cmd)
-  game.send("#{cmd}!".to_sym)
+def move_robot(cmd)
+  $game.send("#{cmd}!".to_sym)
 rescue StandardError => e
   print_error_message e
 end
 
-def print_position(game)
+def print_position
   begin
-    position = game.report!
+    position = $game.report!
   rescue StandardError => e
     return print_error_message e
   end
 
   # print playground with robot position
   printing = []
-  size = game.playground_size
+  size = $game.playground_size
   grid_width = 3
   (0..size).each do |row|
     if row == size
       # print top line
-      printing.unshift('-' * (game.playground_size * grid_width + 1))
+      printing.unshift('-' * ($game.playground_size * grid_width + 1))
     else
       print_col = ['', '']
       (0..size).each do |col|
@@ -138,58 +138,58 @@ def robot_direction(direction)
   end
 end
 
-def handle_cmd(game, cmd, mode)
+def handle_cmd(cmd, mode)
   action = extract_cmd(cmd)
   exit(0) if cmd == 'quit'
 
   case action
     when 'place'
-      place_robot(game, cmd)
+      place_robot(cmd)
     when 'move', 'left', 'right'
-      move_robot(game, action)
+      move_robot(action)
     when 'report'
-      print_position(game)
+      print_position
     else
       mode == 'i' ? print_commands : (puts 'Invalid command')
   end
 end
 
 # load commands from console
-def interactive_mode(game)
+def interactive_mode
   puts "Welcome to Toy Robot Simulator!"
 
-  set_name(game)
-  set_size(game)
+  set_name
+  set_size
 
   print_commands
   puts "Let's start"
 
   while true
-    handle_cmd(game, get_cmd('> '), 'i')
+    handle_cmd(get_cmd('> '), 'i')
   end
 end
 
-def file_mode(filepath, game)
+def file_mode(filepath)
   instructions = YAML.load_file filepath
 
   # setup
   if instructions.key?('name') && !instructions['name'].empty?
-    game.name = instructions['name']
+    $game.name = instructions['name']
   end
   if instructions.key?('size') && !instructions['size'].to_s.is_i?
-    game.playground_size = instructions['size'].to_i
+    $game.playground_size = instructions['size'].to_i
   end
 
   # run commands
   instructions['commands'].each do |cmd|
     puts "> #{cmd}"
-    handle_cmd(game, cmd, 'f')
+    handle_cmd(cmd, 'f')
   end
 end
 
-game = ToyRobot::Simulator.new
+$game = ToyRobot::Simulator.new
 case ARGV.shift # mode
-  when '-i' then interactive_mode(game)
-  when '-f' then file_mode(ARGV.shift, game)
+  when '-i' then interactive_mode
+  when '-f' then file_mode(ARGV.shift)
   else print_help_and_exit
 end
