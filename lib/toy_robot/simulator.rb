@@ -2,7 +2,7 @@ module ToyRobot
 
   # This is the main class developer used to control the game
   class Simulator
-    attr_accessor :name
+    attr_accessor :name, :playground
 
     # Init a game
     #
@@ -13,16 +13,6 @@ module ToyRobot
       @name = name
       @playground = ToyRobot::Playground.new(size)
       @robot = ToyRobot::Robot.new
-    end
-
-    # Get size of playground
-    def playground_size
-      @playground.size
-    end
-
-    # Set size of playground
-    def set_playground_size(size)
-      @playground.size = size
     end
 
     # Place a robot on playground
