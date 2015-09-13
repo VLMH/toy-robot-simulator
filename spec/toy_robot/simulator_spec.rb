@@ -8,14 +8,14 @@ RSpec.describe ToyRobot::Simulator do
     specify { expect(game.name).to eq(default_name) }
   end
 
-  describe '#playground_size' do
-    specify { expect(game.playground_size).to eq(default_size) }
+  describe '#playground' do
+    specify { expect(game.playground.size).to eq(default_size) }
   end
 
-  describe '#set_playground_size' do
+  describe '#playground=' do
     new_size = default_size + 1
-    before { game.set_playground_size(new_size) }
-    specify { expect(game.playground_size).to eq(new_size) }
+    before { game.playground.size = new_size }
+    specify { expect(game.playground.size).to eq(new_size) }
   end
 
   describe '#place!' do
