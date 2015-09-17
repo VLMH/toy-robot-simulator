@@ -11,7 +11,8 @@ module ToyRobot
 
     # Init robot with a name
     # Position includes coordinate (x, y) and direction (f)
-    def initialize(name='BB8')
+    def initialize(playground, name='BB8')
+      @playground = playground
       @name = name
       @position = {:x => nil, :y => nil, :f => nil}
     end
