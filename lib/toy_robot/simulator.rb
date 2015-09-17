@@ -12,7 +12,7 @@ module ToyRobot
     def initialize(name='Toy Robot Simulator', size=5)
       @name = name
       @playground = ToyRobot::Playground.new(size)
-      @robot = ToyRobot::Robot.new
+      @robot = ToyRobot::Robot.new(@playground)
     end
 
     # Place a robot on playground
