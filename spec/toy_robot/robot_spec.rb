@@ -1,7 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe ToyRobot::Robot do
-  let(:robot) { ToyRobot::Robot.new }
+  let(:playground) { ToyRobot::Playground.new(default_size) }
+  let(:robot) { ToyRobot::Robot.new(playground) }
+
+  describe '#initialize' do
+    specify { expect{ToyRobot::Robot.new(playground)}.not_to raise_error }
+    specify { expect(ToyRobot::Robot.new(playground, 'i_am_robot').name).to eq('i_am_robot') }
+  end
 
   describe '#name' do
     specify { expect(robot.name).to eq(default_robot_name) }
