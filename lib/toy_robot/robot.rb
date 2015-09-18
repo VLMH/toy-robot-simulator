@@ -57,11 +57,6 @@ module ToyRobot
     def step_forward(step=1)
       return nil unless position?
       moving(step) { |pos, step| pos + step }
-      unless @playground.valid_coordinate?(@position[:x], @position[:y])
-        step_backward(step) # rollback
-        return nil
-      end
-      @position
     end
 
     # Move backward according to direction
@@ -71,7 +66,6 @@ module ToyRobot
     def step_backward(step=1)
       return nil unless position?
       moving(step) { |pos, step| pos - step }
-      @position
     end
 
     # Turn left and return new position
@@ -106,12 +100,21 @@ module ToyRobot
     end
 
     def moving(step, &block)
+      old_position = @position.dup
+
       case @position[:f]
         when NORTH then @position[:y] = yield(@position[:y], step)
         when EAST  then @position[:x] = yield(@position[:x], step)
         when SOUTH then @position[:y] = yield(@position[:y], step * -1)
         when WEST  then @position[:x] = yield(@position[:x], step * -1)
       end
+
+      unless @playground.valid_coordinate?(@position[:x], @position[:y])
+        @position = old_position
+        return nil
+      end
+
+      @position
     end
 
     def direction_sequence
