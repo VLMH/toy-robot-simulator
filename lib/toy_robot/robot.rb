@@ -57,6 +57,10 @@ module ToyRobot
     def step_forward(step=1)
       return nil unless position?
       moving(step) { |pos, step| pos + step }
+      unless @playground.valid_coordinate?(@position[:x], @position[:y])
+        step_backward(step) # rollback
+        return nil
+      end
       @position
     end
 
