@@ -117,7 +117,7 @@ RSpec.describe ToyRobot::Robot do
     end
 
     context 'when position is set' do
-      x = y = 0
+      x = y = 1
 
       context 'face to north' do
         f = 'n'
