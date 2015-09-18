@@ -109,27 +109,38 @@ RSpec.describe ToyRobot::Robot do
       end
     end
 
+    shared_examples 'make a step backward on a one grid playground' do |f|
+      it 'step backward' do
+        robot_on_one_grid_playground.set_position(0, 0, f)
+        expect(robot_on_one_grid_playground.step_backward).to be_falsey
+      end
+    end
+
     context 'when position is set' do
       x = y = 0
 
       context 'face to north' do
         f = 'n'
         include_examples 'make a step backward', x, y, f, {x: x, y: y - 1, f: f}
+        include_examples 'make a step backward on a one grid playground', f
       end
 
       context 'face to east' do
         f = 'e'
         include_examples 'make a step backward', x, y, f, {x: x - 1, y: y, f: f}
+        include_examples 'make a step backward on a one grid playground', f
       end
 
       context 'face to south' do
         f = 's'
         include_examples 'make a step backward', x, y, f, {x: x, y: y + 1, f: f}
+        include_examples 'make a step backward on a one grid playground', f
       end
 
       context 'face to west' do
         f = 'w'
         include_examples 'make a step backward', x, y, f, {x: x + 1, y: y, f: f}
+        include_examples 'make a step backward on a one grid playground', f
       end
     end
 
