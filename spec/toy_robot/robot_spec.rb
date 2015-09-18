@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe ToyRobot::Robot do
   let(:playground) { ToyRobot::Playground.new(default_size) }
   let(:robot) { ToyRobot::Robot.new(playground) }
+  let(:robot_on_one_grid_playground) { ToyRobot::Robot.new(ToyRobot::Playground.new(1)) }
 
   describe '#initialize' do
     specify { expect{ToyRobot::Robot.new(playground)}.not_to raise_error }
@@ -60,27 +61,38 @@ RSpec.describe ToyRobot::Robot do
       end
     end
 
+    shared_examples 'make a step forward on a one grid playground' do |f|
+      it 'step forward' do
+        robot_on_one_grid_playground.set_position(0, 0, f)
+        expect(robot_on_one_grid_playground.step_forward).to be_falsey
+      end
+    end
+
     context 'when position is set' do
-      x = y = 0
+      x = y = 1
 
       context 'face to north' do
         f = 'n'
         include_examples 'make a step forward', x, y, f, {x: x, y: y + 1, f: f}
+        include_examples 'make a step forward on a one grid playground', f
       end
 
       context 'face to east' do
         f = 'e'
         include_examples 'make a step forward', x, y, f, {x: x + 1, y: y, f: f}
+        include_examples 'make a step forward on a one grid playground', f
       end
 
       context 'face to south' do
         f = 's'
         include_examples 'make a step forward', x, y, f, {x: x, y: y - 1, f: f}
+        include_examples 'make a step forward on a one grid playground', f
       end
 
       context 'face to west' do
         f = 'w'
         include_examples 'make a step forward', x, y, f, {x: x - 1, y: y, f: f}
+        include_examples 'make a step forward on a one grid playground', f
       end
     end
 
