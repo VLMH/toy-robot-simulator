@@ -64,7 +64,10 @@ RSpec.describe ToyRobot::Robot do
     shared_examples 'make a step forward on a one grid playground' do |f|
       it 'step forward' do
         robot_on_one_grid_playground.set_position(0, 0, f)
+        original_position = robot_on_one_grid_playground.position.dup
+
         expect(robot_on_one_grid_playground.step_forward).to be_falsey
+        expect(robot_on_one_grid_playground.position).to eq(original_position)
       end
     end
 
@@ -112,7 +115,10 @@ RSpec.describe ToyRobot::Robot do
     shared_examples 'make a step backward on a one grid playground' do |f|
       it 'step backward' do
         robot_on_one_grid_playground.set_position(0, 0, f)
+        original_position = robot_on_one_grid_playground.position.dup
+
         expect(robot_on_one_grid_playground.step_backward).to be_falsey
+        expect(robot_on_one_grid_playground.position).to eq(original_position)
       end
     end
 
