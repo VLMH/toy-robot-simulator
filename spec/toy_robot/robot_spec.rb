@@ -66,7 +66,7 @@ RSpec.describe ToyRobot::Robot do
         robot_on_one_grid_playground.set_position(0, 0, f)
         original_position = robot_on_one_grid_playground.position.dup
 
-        expect(robot_on_one_grid_playground.step_forward).to be_falsey
+        expect(robot_on_one_grid_playground.step_forward!).to be_falsey
         expect(robot_on_one_grid_playground.position).to eq(original_position)
       end
     end
@@ -151,7 +151,7 @@ RSpec.describe ToyRobot::Robot do
     end
 
     context 'when position is not set' do
-      specify { expect(robot.step_forward).to be_nil }
+      specify { expect(robot.step_backward).to be_nil }
     end
   end
 
