@@ -66,7 +66,7 @@ RSpec.describe ToyRobot::Robot do
         robot_on_one_grid_playground.set_position(0, 0, f)
         original_position = robot_on_one_grid_playground.position.dup
 
-        expect(robot_on_one_grid_playground.step_forward!).to be_falsey
+        expect{robot_on_one_grid_playground.step_forward!}.to raise_error(ReachedBoundaryError, 'Robot reached boundary')
         expect(robot_on_one_grid_playground.position).to eq(original_position)
       end
     end
