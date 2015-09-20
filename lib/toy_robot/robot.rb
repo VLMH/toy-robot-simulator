@@ -54,8 +54,8 @@ module ToyRobot
     #
     # Params:
     # - +step+ number of steps to move
-    def step_forward(step=1)
-      return nil unless position?
+    def step_forward!(step=1)
+      verify_position!
       moving(step) { |pos, step| pos + step }
     end
 
@@ -120,5 +120,11 @@ module ToyRobot
     def direction_sequence
       [NORTH, EAST, SOUTH, WEST]
     end
+
+    def verify_position!
+      raise NoPositionError, 'Robot is not on playground' unless position?
+    end
   end
 end
+
+class NoPositionError < RuntimeError; end
