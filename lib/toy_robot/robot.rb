@@ -56,7 +56,7 @@ module ToyRobot
     # - +step+ number of steps to move
     def step_forward!(step=1)
       verify_position!
-      moving(step) { |pos, step| pos + step }
+      moving!(step) { |pos, step| pos + step }
     end
 
     # Move backward according to direction
@@ -99,7 +99,7 @@ module ToyRobot
       end
     end
 
-    def moving(step, &block)
+    def moving!(step, &block)
       old_position = @position.dup
 
       case @position[:f]
@@ -111,7 +111,7 @@ module ToyRobot
 
       unless @playground.valid_coordinate?(@position[:x], @position[:y])
         @position = old_position
-        return nil
+        raise ReachedBoundaryError, 'Robot reached boundary'
       end
 
       @position
@@ -128,3 +128,4 @@ module ToyRobot
 end
 
 class NoPositionError < RuntimeError; end
+class ReachedBoundaryError < RuntimeError; end
