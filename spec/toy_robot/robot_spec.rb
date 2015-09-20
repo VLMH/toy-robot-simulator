@@ -53,11 +53,11 @@ RSpec.describe ToyRobot::Robot do
     end
   end
 
-  describe '#step_forward' do
+  describe '#step_forward!' do
     shared_examples 'make a step forward' do |x, y, f, expected_position|
       it 'step forward' do
         robot.set_position(x, y, f)
-        expect(robot.step_forward).to eq(expected_position)
+        expect(robot.step_forward!).to eq(expected_position)
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe ToyRobot::Robot do
     end
 
     context 'when position is not set' do
-      specify { expect(robot.step_forward).to be_nil }
+      specify { expect{robot.step_forward!}.to raise_error(NoPositionError, 'Robot is not on playground') }
     end
   end
 
