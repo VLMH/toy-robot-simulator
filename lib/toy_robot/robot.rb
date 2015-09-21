@@ -70,8 +70,8 @@ module ToyRobot
 
     # Turn left and return new position
     # Return nil if position is not set
-    def turn_left
-      return nil unless position?
+    def turn_left!
+      verify_position!
       @position[:f] = direction_sequence[direction_sequence.index(@position[:f]) - 1]
       @position
     end
