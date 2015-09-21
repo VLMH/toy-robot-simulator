@@ -39,6 +39,11 @@ module ToyRobot
       }
     end
 
+    def position!
+      raise NoPositionError, 'Robot is not on playground' unless position?
+      @position
+    end
+
     # Check if position is set
     # Return true with both coordinate (x, y) and direction are set
     def position?
