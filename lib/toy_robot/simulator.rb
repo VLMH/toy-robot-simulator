@@ -2,7 +2,7 @@ module ToyRobot
 
   # This is the main class developer used to control the game
   class Simulator
-    attr_accessor :name, :playground
+    attr_accessor :name, :playground, :robot
 
     # Init a game
     #
