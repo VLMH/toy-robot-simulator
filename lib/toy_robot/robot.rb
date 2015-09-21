@@ -24,11 +24,12 @@ module ToyRobot
     # - +x+ X-coordinate
     # - +y+ Y-coordinate
     # - +f+ Direction
-    def set_position(x, y, f)
+    def set_position!(x, y, f)
       if !x.is_a?(Integer) ||
          !y.is_a?(Integer) ||
-         !(direction = identify_direction(f))
-         return nil
+         !(direction = identify_direction(f)) ||
+         !@playground.valid_coordinate?(x, y)
+         raise InvalidPositionError, 'Position is not valid'
       end
 
       @position = {
@@ -127,5 +128,6 @@ module ToyRobot
   end
 end
 
+class InvalidPositionError < RuntimeError; end
 class NoPositionError < RuntimeError; end
 class ReachedBoundaryError < RuntimeError; end
