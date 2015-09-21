@@ -181,7 +181,7 @@ RSpec.describe ToyRobot::Robot do
     shared_examples 'turn right' do |x, y, f, expected_f|
       it "turn right from #{f}" do
         robot.set_position(x, y, f)
-        expect(robot.turn_right[:f]).to eq(expected_f)
+        expect(robot.turn_right![:f]).to eq(expected_f)
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe ToyRobot::Robot do
     end
 
     context 'when position is not set' do
-      specify { expect(robot.turn_left).to be_nil }
+      specify { expect{robot.turn_right!}.to raise_error(NoPositionError, 'Robot is not on playground') }
     end
   end
 end
