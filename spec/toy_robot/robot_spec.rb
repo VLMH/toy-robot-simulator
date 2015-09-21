@@ -18,9 +18,13 @@ RSpec.describe ToyRobot::Robot do
     specify { expect(robot.set_position!(0, 0, 'n')).to be_truthy }
 
     context 'when invalid position' do
-      specify { expect{robot.set_position!('a', 0, 'n')}.to raise_error(InvalidPositionError, 'Position is not valid') }
-      specify { expect{robot.set_position!(0, 'b', 'n')}.to raise_error(InvalidPositionError, 'Position is not valid') }
-      specify { expect{robot.set_position!(0, 0, 'x')}.to raise_error(InvalidPositionError, 'Position is not valid') }
+      [
+        ['a', 0, 'n'],
+        [0, 'b', 'n'],
+        [0, 0, 'x'],
+      ].each do |position|
+        specify { expect{robot.set_position!(*position)}.to raise_error(InvalidPositionError, 'Position is not valid') }
+      end
     end
   end
 
