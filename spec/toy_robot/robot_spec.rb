@@ -104,11 +104,11 @@ RSpec.describe ToyRobot::Robot do
     end
   end
 
-  describe '#step_backward' do
+  describe '#step_backward!' do
     shared_examples 'make a step backward' do |x, y, f, expected_position|
       it 'step backward' do
         robot.set_position(x, y, f)
-        expect(robot.step_backward).to eq(expected_position)
+        expect(robot.step_backward!).to eq(expected_position)
       end
     end
 
@@ -117,7 +117,7 @@ RSpec.describe ToyRobot::Robot do
         robot_on_one_grid_playground.set_position(0, 0, f)
         original_position = robot_on_one_grid_playground.position.dup
 
-        expect(robot_on_one_grid_playground.step_backward).to be_falsey
+        expect{robot_on_one_grid_playground.step_backward!}.to raise_error(ReachedBoundaryError, 'Robot reached boundary')
         expect(robot_on_one_grid_playground.position).to eq(original_position)
       end
     end
@@ -151,7 +151,7 @@ RSpec.describe ToyRobot::Robot do
     end
 
     context 'when position is not set' do
-      specify { expect(robot.step_backward).to be_nil }
+      specify { expect{robot.step_backward!}.to raise_error(NoPositionError, 'Robot is not on playground') }
     end
   end
 
