@@ -65,7 +65,7 @@ module ToyRobot
     # - +step+ number of steps to move
     def step_backward(step=1)
       return nil unless position?
-      moving(step) { |pos, step| pos - step }
+      moving!(step) { |pos, step| pos - step }
     end
 
     # Turn left and return new position
