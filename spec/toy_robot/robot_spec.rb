@@ -28,6 +28,19 @@ RSpec.describe ToyRobot::Robot do
     end
   end
 
+  describe '#position!' do
+    context 'when position is set' do
+      it 'return position' do
+        robot.set_position!(0, 0, 'n')
+        expect(robot.position!).to eq({x: 0, y: 0, f: 'n'})
+      end
+    end
+
+    context 'when position is not set' do
+      specify { expect{robot.position!}.to raise_error(NoPositionError, 'Robot is not on playground') }
+    end
+  end
+
   describe '#position?' do
     context 'when position is set' do
       it 'return true' do
