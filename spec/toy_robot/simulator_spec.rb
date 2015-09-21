@@ -18,6 +18,16 @@ RSpec.describe ToyRobot::Simulator do
     specify { expect(game.playground.size).to eq(new_size) }
   end
 
+  describe '#robot' do
+    specify { expect(game.robot.name).to eq(default_robot_name) }
+  end
+
+  describe '#robot=' do
+    let(:new_name) { 'new robot name' }
+    before { game.robot = ToyRobot::Robot.new(game.playground, new_name) }
+    specify { expect(game.robot.name).to eq(new_name) }
+  end
+
   describe '#place!' do
     context 'when provide valid position' do
       specify { expect{game.place!(0, 0, 'n')}.not_to raise_error }
