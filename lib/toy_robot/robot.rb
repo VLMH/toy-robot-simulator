@@ -63,8 +63,8 @@ module ToyRobot
     #
     # Params:
     # - +step+ number of steps to move
-    def step_backward(step=1)
-      return nil unless position?
+    def step_backward!(step=1)
+      verify_position!
       moving!(step) { |pos, step| pos - step }
     end
 
